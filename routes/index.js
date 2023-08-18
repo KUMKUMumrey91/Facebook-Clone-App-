@@ -12,34 +12,29 @@ router.get('/', function(req, res, next) {
   res.render('index');
 })
 
-
-router.post('/register', function(req,res){
-  var newUser = new userModel ({
+router.post('/register', function (req, res) {
+  var newUser = new userModel({
     username: req.body.username,
-    age:req.body.age,
-    email:req.body.email,
-
+    age: req.body.age,
+    email: req.body.email,
   })
   userModel.register(newUser, req.body.password)
-  .then(function(u){
-    passport.authenticate('local')(req,res,fuction())
-    res.redirect('/profile')
-  })
-}) 
-.catch(function(e){
-  res.sender(e)
+    .then(function (u) {
+      passport.authenticate('local')(req, res, function () {
+        res.redirect('/profile')
+      })
+    })
 })
-
-router.get('/profile', function(req, res, next) {
-  res.render('profile');
+ 
+router.get('/profile',isLoggedIn, function(req, res, next) {
+  res.render('profile'),{username:req.session.passport.user};
 })
-
 
 router.get('/login', function(req, res, next) {
   res.render('login');
 })
 
-router.post('/login',isLoggedIn, passport.authenticate('local',
+router.post('/login', passport.authenticate('local',
 { successRedirect:'/profile',
 faliureRediret:'/login'
 }),function(req,res,next){});

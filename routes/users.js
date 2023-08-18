@@ -9,9 +9,9 @@ const userSchema = mongoose.Schema({
   password: req.body.password,
   age: req.body.age,
   email: req.body.email,
- 
+ image: req.body.image,
 });
 
 userSchema.plugin(plm);
 
-module.exports = mongoose.model("user", userSchema); 
+module.exports = mongoose.model('user', userSchema); 
