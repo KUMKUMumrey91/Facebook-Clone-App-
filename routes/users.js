@@ -5,11 +5,11 @@ mongoose.connect("mongodb://127.0.0.1:27017/hello");
 
 
 const userSchema = mongoose.Schema({
-  username: req.body.username,
-  password: req.body.password,
-  age: req.body.age,
-  email: req.body.email,
- image: req.body.image,
+  username: String,
+  password: String,
+  age: Number,
+  email: String,
+  image: String,
 });
 
 userSchema.plugin(plm);

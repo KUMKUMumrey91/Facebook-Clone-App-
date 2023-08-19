@@ -9,7 +9,7 @@ passport.use(new localStrategy(userModel.authenticate()));
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index');
+  res.render('index'),{username:req.session.passport.user};
 })
 
 router.post('/register', function (req, res) {
