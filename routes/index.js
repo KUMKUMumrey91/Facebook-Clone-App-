@@ -17,6 +17,7 @@ router.post('/register', function (req, res) {
     username: req.body.username,
     age: req.body.age,
     email: req.body.email,
+    image: req.body.image,
   })
   userModel.register(newUser, req.body.password)
     .then(function (u) {
@@ -25,7 +26,7 @@ router.post('/register', function (req, res) {
       })
     })
 })
- 
+
 router.get('/profile',isLoggedIn, function(req, res, next) {
   res.render('profile'),{username:req.session.passport.user};
 })
