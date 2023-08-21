@@ -28,7 +28,7 @@ router.post('/register', function (req, res) {
 })
 
 router.get('/profile',isLoggedIn, function(req, res, next) {
-  res.render('profile'),{username:req.session.passport.user};
+  userModel.findByUsername(req.session.passport.user).then((user) => res.render('profile',{user}))
 })
 
 router.get('/login', function(req, res, next) {
@@ -52,7 +52,7 @@ function isLoggedIn(req,res,next)
 {if (req.isAuthenticated()){
   return next();
 }else{
-  req.redirect('/');
+  res.redirect('/');
 }}
 
 module.exports = router;
