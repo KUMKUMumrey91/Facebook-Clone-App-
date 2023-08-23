@@ -9,7 +9,7 @@ passport.use(new localStrategy(userModel.authenticate()));
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index'),{username:req.session.passport.user};
+  res.render('index');
 })
 
 router.post('/register', function (req, res) {
@@ -28,7 +28,8 @@ router.post('/register', function (req, res) {
 })
 
 router.get('/profile',isLoggedIn, function(req, res, next) {
-  res.render('profile'),{username:req.session.passport.user};
+  userModel.findByUsername(req.session.passport.user)
+  .then((user) => res.render('profile',{user}))
 })
 
 router.get('/login', function(req, res, next) {
@@ -44,7 +45,7 @@ faliureRediret:'/login'
 router.get('/logout',function(req,res,next){
   req.logout(function(err) {
   if (err) { return next(err); }
-  res.redirect('/');
+  res.redirect('/login');
 });
 });
 
@@ -52,7 +53,7 @@ function isLoggedIn(req,res,next)
 {if (req.isAuthenticated()){
   return next();
 }else{
-  req.redirect('/');
+  res.redirect('/');
 }}
 
 module.exports = router;
