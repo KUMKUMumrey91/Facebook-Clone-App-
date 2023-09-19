@@ -3,9 +3,9 @@ var router = express.Router();
 var userModel = require("./users")
 var postModel = require("./posts")
 const passport = require("passport")
-const path = require ("path");
-const fs = require ("fs");
-const multer = require ("multer");
+const path = require("path");
+const fs = require("fs");
+const multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -38,9 +38,9 @@ router.post('/upload', isLoggedIn, upload.single("image"), function (req, res, n
       }
       founduser.image = req.file.filename;
       founduser.save()
-      .then(function () {
-        res.redirect("back");
-      })
+        .then(function () {
+          res.redirect("back");
+        })
     });
 });
 
@@ -78,26 +78,26 @@ router.get('/profile', isLoggedIn, function (req, res, next) {
 
 router.post('/post', isLoggedIn, function (req, res, next) {
   userModel
-  .findOne({username: req.session.passport.user})
-  .then(function(user){
-    postModel.create({
-      userid: user._id,
-      data: req.body.post
-    })
-    .then(function(post){
-      user.posts.push(post._id);
-      user.save()
-      .then(function(){
-        res.redirect("back");
+    .findOne({ username: req.session.passport.user })
+    .then(function (user) {
+      postModel.create({
+        userid: user._id,
+        data: req.body.post
       })
+        .then(function (post) {
+          user.posts.push(post._id);
+          user.save()
+            .then(function () {
+              res.redirect("back");
+            })
+        })
     })
-  })
 });
 
 router.get('/feed', isLoggedIn, function (req, res, next) {
   postModel
-  .find()
-  .populate("userid")
+    .find()
+    .populate("userid")
     .then(function (allposts) {
       res.render("feed", { allposts });
     });
@@ -123,6 +123,28 @@ router.get('/like/:postid', isLoggedIn, function (req, res, next) {
         })
     })
 });
+
+router.get('/edit', isLoggedIn, function (req, res, next) {
+  userModel
+    .findOne({ username: req.session.passport.user })
+    .then(function (foundUser) {
+      res.render("edit", { foundUser })
+    })
+})
+
+router.get('/check/:username', function (req, res, next) {
+  userModel
+  .findOne({ username: req.params.username })
+  .then(function (user) {
+    if(user){
+      res.json(true)
+    }
+    else{
+      res.json(false)
+    }
+  })
+})
+
 
 router.get('/login', function (req, res, next) {
   res.render('login');

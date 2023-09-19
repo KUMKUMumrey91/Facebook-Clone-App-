@@ -10,7 +10,29 @@
 </head>
 
 <body>
-
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Profile</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/profile">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/feed">Feed</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/logout" class="text-danger nav-link">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container py-3">
         <h4 class="mb-4">Feed</h4>
         <p style="margin-top: -22px;">All posts from all around the world .</p>
@@ -26,10 +48,7 @@
                     <p style="font-weight: 600;" class="text-primary">
                         <%= post.likes.length %> Likes
                     </p>
-                    <a href="/like/<%= post._id %>"
-                        class="btn <%= post.likes.indexOf(user.id) === -1 ? 'btn-primary' : 'btn-danger' %>">
-                        <%= post.likes.indexOf(user.id)===-1 ? "Like" : "Unlike" %>
-                    </a>
+                  
                 </div>
             </div>
         <% }) %>
