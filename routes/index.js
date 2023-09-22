@@ -38,9 +38,9 @@ router.post('/upload', isLoggedIn, upload.single("image"), function (req, res, n
       }
       founduser.image = req.file.filename;
       founduser.save()
-        .then(function () {
-          res.redirect("back");
-        })
+      .then(function () {
+        res.redirect("back");
+      })
     });
 });
 
@@ -132,17 +132,28 @@ router.get('/edit', isLoggedIn, function (req, res, next) {
     })
 })
 
+router.post('/update', isLoggedIn, function (req, res, next) {
+  userModel
+  .findOneAndUpdate({username: req.session.passport.user}, {username: req.body.username}, {new: true})
+  .then(function(updateduser){
+    req.login(updateduser, function(err) {
+      if (err) { return next(err); }
+      return res.redirect('/profile');
+    });
+  })
+});
+
 router.get('/check/:username', function (req, res, next) {
   userModel
-  .findOne({ username: req.params.username })
-  .then(function (user) {
-    if(user){
-      res.json(true)
-    }
-    else{
-      res.json(false)
-    }
-  })
+    .findOne({ username: req.params.username })
+    .then(function (user) {
+      if (user) {
+        res.json(true)
+      }
+      else {
+        res.json(false)
+      }
+    })
 })
 
 
